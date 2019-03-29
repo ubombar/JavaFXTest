@@ -20,11 +20,6 @@ public class Game
         GameApplication.launch(GameApplication.class, "");
     }
 
-    public Game(GameSettings settings)
-    {
-        this(settings, new GameObjectContainer());
-    }
-
     public static Game getCurrent()
     {
         return current;

@@ -1,10 +1,14 @@
-package game.levels;
+package game.ballgame;
 
 import core.GameObjectContainer;
-import game.objects.Ball;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LevelDungeon extends GameObjectContainer
 {
@@ -15,8 +19,6 @@ public class LevelDungeon extends GameObjectContainer
     public LevelDungeon()
     {
         super();
-        Ball b = new Ball(500, 50, 30);
-        addObject(b);
     }
 
     public Ball getBall()
@@ -25,14 +27,26 @@ public class LevelDungeon extends GameObjectContainer
     }
 
     @Override
-    public void render(GraphicsContext g, double delta)
+    public void update(GraphicsContext g,  int width, int height, double delta)
     {
         if (ball != null)
         {
-            ball.radius = (int) ((System.currentTimeMillis() - startTime) * 0.05) + 30;
+            ball.radius = (int) ((System.currentTimeMillis() - startTime) * 0.005) + 10;
             ball.color = Color.color(Math.random(), Math.random(), Math.random());
         }
         physicsEngine();
+        List<GameObject> toRemove = new ArrayList<>();
+
+        for (GameObject obj : getObjectList())
+        {
+            if (obj instanceof Ball)
+            {
+                Ball b = (Ball) obj;
+                if (b.x < 0 || b.x > width || b.y < 0 || b.y > height)
+                    toRemove.add(obj);
+            }
+        }
+        removeObjects(toRemove);
     }
 
     @Override
@@ -40,6 +54,7 @@ public class LevelDungeon extends GameObjectContainer
     {
         int mx = (int) me.getX();
         int my = (int) me.getY();
+        double absmax = 10;
 
         if (me.getEventType() == MouseEvent.MOUSE_PRESSED)
         {
@@ -48,7 +63,6 @@ public class LevelDungeon extends GameObjectContainer
                 startTime = System.currentTimeMillis();
                 isPressing = true;
                 ball = new Ball(mx, my, 0);
-                double absmax = 1;
                 ball.ax = Math.random() * absmax * 2 - absmax;
                 ball.ay = Math.random() * absmax * 2 - absmax;
                 addObject(ball);
@@ -63,6 +77,14 @@ public class LevelDungeon extends GameObjectContainer
                 ball = null;
             }
         }
+        else if (me.getEventType() == MouseEvent.MOUSE_DRAGGED)
+        {
+            Ball b = new Ball(mx, my, ball.radius);
+            b.color = ball.color;
+            b.ax = Math.random() * absmax * 2 - absmax;
+            b.ay = Math.random() * absmax * 2 - absmax;
+            addObject(b);
+        }
         else
         {
             if (ball != null)
@@ -72,6 +94,17 @@ public class LevelDungeon extends GameObjectContainer
             }
         }
 
+    }
+
+    @Override
+    public void onKeyEvent(KeyEvent ke)
+    {
+        System.out.println(ke.getCharacter());
+        if (ke.getCode() == KeyCode.SPACE)
+        {
+            clear();
+        }
+        System.out.println(ke);
     }
 
     public void physicsEngine()

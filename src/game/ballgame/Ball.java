@@ -1,8 +1,7 @@
-package game.objects;
+package game.ballgame;
 
 import core.Game;
 import core.GameObjectContainer;
-import game.levels.LevelDungeon;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -48,12 +47,14 @@ public class Ball extends GameObjectContainer.GameObject
         int mx = (int) me.getX();
         int my = (int) me.getY();
 
+        /*
         if (Math.pow(mx - x, 2) <= radius * radius && Math.pow(my - y, 2) <= radius * radius)
         {
             double absmax = 50;
             ax = Math.random() * absmax * 2 - absmax;
             ay = Math.random() * absmax * 2 - absmax;
         }
+        */
     }
 
     public void addForce(double fx, double fy)

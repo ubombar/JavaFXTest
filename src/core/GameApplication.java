@@ -38,11 +38,13 @@ public class GameApplication extends Application
         canvas.setOnMouseReleased(me -> Game.getCurrent().invokeMouseEvent(me));
 
         canvas.setOnKeyPressed(ke -> Game.getCurrent().invokeKeyEvent(ke));
+        canvas.setOnKeyReleased(ke -> Game.getCurrent().invokeKeyEvent(ke));
+        canvas.setOnKeyTyped(ke -> Game.getCurrent().invokeKeyEvent(ke));
 
         double delay = 1000.0 / Game.getCurrent().getSettings().getWindowRequestedFPS();
 
         timeline = new Timeline(new KeyFrame(Duration.millis(delay), event ->
-            Game.getCurrent().getSettings().getWindowRenderer().render(context, delay)
+            Game.getCurrent().getSettings().getWindowRenderer().render(context, (int) canvas.getWidth(), (int) canvas.getHeight(), delay)
         ));
         timeline.setCycleCount(Animation.INDEFINITE);
         primaryStage.setScene(new Scene(root));

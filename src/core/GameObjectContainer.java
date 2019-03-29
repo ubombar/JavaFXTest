@@ -1,6 +1,5 @@
 package core;
 
-import game.levels.LevelDungeon;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -9,10 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GameObjectContainer
+public abstract class GameObjectContainer
 {
-    public static final GameObjectContainer LEVEL_DUNGEON = new LevelDungeon();
-
     public static abstract class GameObject implements Renderable, Inputable
     {
         @Override
@@ -74,9 +71,24 @@ public class GameObjectContainer
         return objects.remove(object);
     }
 
+    protected boolean removeObjects(List<GameObject> objects)
+    {
+        return this.objects.removeAll(objects);
+    }
+
+    protected List<GameObject> getObjectList()
+    {
+        return objects;
+    }
+
     protected void clear()
     {
         objects.clear();
+    }
+
+    protected int objectCount()
+    {
+        return objects.size();
     }
 
     public void foreach(Consumer<? super GameObject> action)
@@ -89,10 +101,7 @@ public class GameObjectContainer
 
     }
 
-    public void render(GraphicsContext g, double delta)
-    {
-
-    }
+    public abstract void update(GraphicsContext g, int width, int height, double delta);
 
     public void destroy()
     {

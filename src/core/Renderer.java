@@ -23,7 +23,7 @@ public class Renderer
         objectsInstance.foreach(Renderable :: initialize);
     }
 
-    public void render(GraphicsContext gc, double delta)
+    public void render(GraphicsContext gc,  int width, int height, double delta)
     {
         gc.setFill(Color.WHITE);
         gc.fillRect(
@@ -31,7 +31,7 @@ public class Renderer
                 0,
                 Game.getCurrent().getSettings().getWindowWidth(),
                 Game.getCurrent().getSettings().getWindowHeight());
-        objectsInstance.render(gc, delta);
+        objectsInstance.update(gc, width, height, delta);
         objectsInstance.foreach(gameObject -> gameObject.render(gc, delta));
     }
 

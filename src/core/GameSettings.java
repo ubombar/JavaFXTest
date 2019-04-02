@@ -11,7 +11,7 @@ public class GameSettings
         public int windowWidth = 1280;
         public int windowHeight = 720;
         public String windowTitle = "";
-        public int windowRequestedFPS = 60;
+        public int windowRequestedFPS = 30;
         public Renderer windowRenderer = new Renderer();
         public String windowIconName = "app_icon.png";
     }
